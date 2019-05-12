@@ -1,29 +1,46 @@
+/* 
+Author: Drew Kwak
+Date: 5/12/2019
+Description: Driver for the tests of the threads.    
+*/
 import java.util.Date;
 
 public class Test3 extends Thread {
-    private int pairs;
+  private final static String cpuTest = "TestThread3a";
+  private final static String ioTest  = "TestThread3b";
+  private int pairs;
 
-    public Test3(String[] args){
-        this.pairs = Integer.parseInt(args[0]);
-    }
+  public Test3() {
+    pairs = 1;
+  }
 
-    public void run(){
-        String [] argA = SysLib.stringToArgs("TestThread3 A");
-        String [] argB = SysLib.stringToArgs("TestThread3 B");
-        long initTime =  (new Date()).getTime();
+  public Test3(String[] args) {
+    pairs = Integer.parseInt(args[0]);
+  }
 
-        for (int i = 0; i < this.pairs ; i++){
-            SysLib.exec(argA);
-            SysLib.exec(argB);
-        }
+  @Override
+  public void run() {
+  // Timer Start.
+  Date stop, start = new Date();
+  // Thread ID.
+  int tid;           
 
-        for (int i = 0; i < (2 * this.pairs); i++){
-            SysLib.join();
-        }
+  // Execute pairs of threads. 
+  for (int i = 0; i < pairs; i++) {
+    SysLib.exec(SysLib.stringToArgs(cpuTest));
+    SysLib.exec(SysLib.stringToArgs(ioTest));
+  }
 
-        long finishTime = (new Date()).getTime();
-        SysLib.cout("elapsed time: " + (finishTime - initTime) + " ms\n");
-        SysLib.exit();
-    }
+  // Wait on threads to finish. 
+  for (int i = 0; i < pairs * 2; i++) {
+    tid  = SysLib.join();
+    stop = new Date();
+  }
 
+  // Stop the Timer. 
+  stop = new Date();
+
+  SysLib.cout("\nElapsed time: " + (stop.getTime() - start.getTime()) + " ms\n");
+  SysLib.exit();
+  }
 }
