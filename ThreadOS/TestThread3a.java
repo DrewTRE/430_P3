@@ -6,7 +6,7 @@ Description: Going by what I found online, searching for a factorial is pretty C
 import java.math.BigInteger; 
 
 public class TestThread3a extends Thread {
-  int MAX_CALC = 3000; 
+  int MAX_CALC = 3000;
   BigInteger factorial; 
 
   public TestThread3a() {
@@ -14,10 +14,11 @@ public class TestThread3a extends Thread {
   }
 
   public void run() {
-    for (BigInteger i = BigInteger("1"); i.compareTo(MAX_CALC) <= 0; i.add(BigInteger("1"))) {
-       factorial = factorial.multiply(BigInteger.valueOf(i));
-    }         
+    for (int i = 0; i <= MAX_CALC; i++) {
+      factorial = factorial.multiply(BigInteger.valueOf(i)); 
+    }
     SysLib.cout("TestThread3a Finished\n");
     SysLib.exit();
+    SysLib.cout("TestThread3a Exited\n");
   }
 }
