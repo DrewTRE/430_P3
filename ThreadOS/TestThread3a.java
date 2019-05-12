@@ -7,7 +7,7 @@ import java.math.BigInteger;
 
 public class TestThread3a extends Thread {
   int MAX_CALC = 1000; 
-  Biginteger factorial; 
+  BigInteger factorial; 
 
   public TestThread3a() {
     factorial = new BigInteger("1");
