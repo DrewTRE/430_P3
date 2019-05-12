@@ -19,7 +19,6 @@ public class TestThread3b extends Thread {
         SysLib.rawread(i, data);
     }
   SysLib.cout("TestThread3b Finished\n");
-  SysLib.sync(); 
   SysLib.exit();
   }
 }
