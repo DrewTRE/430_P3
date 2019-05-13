@@ -1,3 +1,9 @@
+/*
+Author: Drew Kwak
+Date: 5/10/2019
+Description: Modified Kernel that supports SyncQueue and gets rid of the spinlock and speeds up multithreading. 
+*/
+
 import java.util.*;
 import java.lang.reflect.*;
 import java.io.*;

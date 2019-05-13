@@ -1,9 +1,3 @@
-/*
-Author: Drew Kwak
-Date: 5/10/2019
-Description: Modified Kernel that supports SyncQueue and avoid busy waiting but not a full monitor
-implementation, so busy waiting will occur with multiple threads. 
-*/
 import java.util.*;
 import java.lang.reflect.*;
 import java.io.*;
@@ -93,20 +87,13 @@ public class Kernel
 		return sysExec( ( String[] )args );
 	    case WAIT:
 		// get the current thread id
-                int tid = scheduler.getMyTcb().getTid();
 		// let the current thread sleep in waitQueue under the 
 		// condition = this thread id
-                // return a child thread id who woke me up
-		return waitQueue.enqueueAndSleep(tid);
+		return OK; // return a child thread id who woke me up
 	    case EXIT:
 		// get the current thread's parent id
-                int pid = scheduler.getMyTcb().getPid();
-                tid = scheduler.getMyTcb().getTid();
 		// search waitQueue for and wakes up the thread under the
 		// condition = the current thread's parent id
-                waitQueue.dequeueAndWakeup(pid, tid);
-                // tell the Scheduler to delete the current thread
-                scheduler.deleteThread();
 		return OK;
 	    case SLEEP:   // sleep a given period of milliseconds
 		scheduler.sleepThread( param ); // param = milliseconds
@@ -139,8 +126,10 @@ public class Kernel
 			}
 			// prepare a read buffer
 			StringBuffer buf = ( StringBuffer )args;
+
 			// append the keyboard intput to this read buffer
 			buf.append( s ); 
+
 			// return the number of chars read from keyboard
 			return s.length( );
 		    } catch ( IOException e ) {
@@ -197,6 +186,7 @@ public class Kernel
 
 	    // wake up the thread waiting for a request acceptance
 	    //ioQueue.dequeueAndWakeup( COND_DISK_REQ );
+
 	    return OK;
 	case INTERRUPT_IO:   // other I/O interrupts (not implemented)
 	    return OK;
@@ -221,14 +211,18 @@ public class Kernel
 		for ( int i = 1; i < args.length; i++ )
 		    thrArgs[i - 1] = args[i];
 		Object[] constructorArgs = new Object[] { thrArgs };
+
 		// locate this class object's constructors
-		Constructor thrConst = thrClass.getConstructor( new Class[] {String[].class} );
+		Constructor thrConst 
+		    = thrClass.getConstructor( new Class[] {String[].class} );
+
 		// instantiate this class object by calling this constructor
                 // with arguments
 		thrObj = thrConst.newInstance( constructorArgs );
 	    }
 	    // instantiate a new thread of this object
 	    Thread t = new Thread( (Runnable)thrObj );
+
 	    // add this thread into scheduler's circular list.
 	    TCB newTcb = scheduler.addThread( t );
 	    return ( newTcb != null ) ? newTcb.getTid( ) : ERROR;

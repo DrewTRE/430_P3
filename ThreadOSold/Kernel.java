@@ -1,8 +1,8 @@
 /*
 Author: Drew Kwak
 Date: 5/10/2019
-Description: Modified Kernel that supports SyncQueue and avoid busy waiting but not a full monitor
-implementation, so busy waiting will occur with multiple threads. 
+Description: Modified Kernel that supports SyncQueue and avoid busy waiting but no spin lock 
+implementation, so some busy waiting will occur with multiple threads. 
 */
 import java.util.*;
 import java.lang.reflect.*;
