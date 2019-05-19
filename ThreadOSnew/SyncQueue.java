@@ -31,10 +31,9 @@ public class SyncQueue {
   // Puts thread to sleep in until condition is satisfied. 
   public int enqueueAndSleep(int myTid) {
     // Check if within bounds of the queue. 
-    myTid = myTid % queue.length;     
-      if (queue[myTid] == null) {
-          queue[myTid] = new QueueNode();
-      }
+    if ((myTid >= 0) && (myTid < this.queue.length)) {
+        this.queue[myTid] = new QueueNode();
+    } 
     return this.queue[myTid].sleep();
   }
 
@@ -42,9 +41,8 @@ public class SyncQueue {
   // Passes the Tid of the calling thread. 
   public void dequeueAndWakeup(int myTid, int hisTid) {
     // Check if within bounds of the queue. 
-    myTid = myTid % queue.length; 
-    if (queue[myTid] != null) {
-      this.queue[myTid].wakeup(hisTid);
+    if ((myTid >= 0) && (myTid < this.queue.length)) {
+        this.queue[myTid].wakeup(hisTid);
     }
   } 
 

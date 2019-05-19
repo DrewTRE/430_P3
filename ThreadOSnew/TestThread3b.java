@@ -1,8 +1,7 @@
 /* 
 Author: Drew Kwak
 Date: 5/12/2019
-Description: Simple IO intensive test that just runs a couple of 
-loops to put some data values onto the disk.    
+Description: Simple IO intensive test.    
 */
 public class TestThread3b extends Thread {
   private final static int BLOCK_QTY  = 1000;
@@ -16,11 +15,9 @@ public class TestThread3b extends Thread {
 
   public void run() {
     for (int i = 0; i < WORK; i++) {
-      // Fill the data with some random values. 
       for(int j = 0; j < BLOCK_SIZE; j++) {
         data[j] = (byte)(j * WORK);    
       }
-      // Write data to the disk. 
       SysLib.rawwrite(i, data);
       SysLib.rawread(i, data);
     }
